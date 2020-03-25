@@ -17,21 +17,22 @@ module.exports = (app) => {
         `
         );
     });
-    app.get('/livros/form/:id', function (req, resp) {
+
+    app.get('/livros/form/:id', function (req, res) {
         const id = req.params.id;
         const livroDao = new LivroDao(db);
 
         livroDao.procura(id)
             .then(livro =>
-                resp.marko(
+                res.marko(
                     require('../views/livros/form/form.marko'), {
                         livro: livro
                     }
                 )
             )
             .catch(erro => console.log(erro));
-
     });
+
     app.get('/livros', (req, res) => {
         const livroDao = new LivroDao(db);
         livroDao.lista()
@@ -44,13 +45,16 @@ module.exports = (app) => {
             })
             .catch(erro => console.log(erro))
     });
+
     app.get('/livros/form', (req, res) => {
         res.marko(
             require('../views/livros/form/form.marko'), {
                 livro: {}
             });
     });
+
     app.post('/livros', (req, res) => {
+        console.log('Adiciona');
         console.log(req.body);
         const livroDao = new LivroDao(db)
         livroDao.adiciona(req.body)
@@ -59,22 +63,24 @@ module.exports = (app) => {
             )
             .catch(erro => console.log(erro));
     });
+
     app.put('/livros', (req, res) => {
+        console.log('Atualiza');
         console.log(req.body);
+        
         const livroDao = new LivroDao(db)
-        livroDao.adiciona(req.body)
+        livroDao.atualiza(req.body)
             .then(
                 res.redirect('/livros')
             )
             .catch(erro => console.log(erro));
     });
+
     app.delete('/livros/:id', (req, resp) => {
         const id = req.params.id;
-
         const livroDao = new LivroDao(db);
         livroDao.remove(id)
             .then(() => resp.status(200).end())
             .catch(erro => console.log(erro));
-
     });
 }

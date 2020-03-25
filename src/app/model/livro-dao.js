@@ -44,8 +44,7 @@ class LivroDao {
                 DELETE 
                 FROM livros
                 WHERE id = ?`,
-                [id]
-                ,
+                [id],
                 (err) => {
                     if (err) {
                         console.log(err);
@@ -63,41 +62,40 @@ class LivroDao {
                     SELECT *
                     FROM livros
                     WHERE id = ?
-                `,[id],
+                `,
+                [id],
                 (erro, livro) => {
-                    if (erro) return reject('Não foi encontrado');
+                    if (erro) {
+                        return reject('Não foi possível encontrar o livro!');
+                    }
                     return resolve(livro);
                 }
-            )
-        })
+            );
+        });
     }
     atualiza(livro) {
         return new Promise((resolve, reject) => {
-            if (livro.titulo.lenght != 0 || livro.preco != 0 || livro.descricao.lenght != 0) {
-                this._db.run(`
+            this._db.run(`
                 UPDATE livros SET
                 titulo = ?,
                 preco = ?,
                 descricao = ?
-                WHERE id = ?`,
-                    [
-                        livro.titulo,
-                        livro.preco,
-                        livro.descricao,
-                        livro.id
-                    ],
-                    (err) => {
-                        if (err) {
-                            console.log(err);
-                            return reject('Não foi possivel adicionar o livro!');
-                        }
-                        resolve();
+                WHERE id = ?
+            `,
+                [
+                    livro.titulo,
+                    livro.preco,
+                    livro.descricao,
+                    livro.id
+                ],
+                erro => {
+                    if (erro) {
+                        return reject('Não foi possível atualizar o livro!');
                     }
-                )
-            }
+                    resolve();
+                });
         });
     }
-
 }
 
 module.exports = LivroDao;
