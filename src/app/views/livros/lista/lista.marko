@@ -1,0 +1,21 @@
+html
+    head
+        meta charset="utf-8"
+    body
+        h1 -- Listagem de livros
+        table id="livros" 
+            tr
+                th -- Id
+                th -- Título
+                th -- Preço
+            for|livro| of=data.livros
+                tr id=`livro_${livro.id}`
+                    td -- ${livro.id}
+                    td -- ${livro.titulo}
+                    td -- ${livro.preco}
+                    td  
+                        a href="#" -- Editar
+                    td  
+                        a href="#" data-ref=`${livro.id}` data-type="remocao" -- Remover
+
+        script src="/static/js/remove-livro.js"
