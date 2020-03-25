@@ -57,7 +57,7 @@ class LivroDao {
         });
     }
     procura(id) {
-        return new Promisse((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this._db.get(
                 `
                     SELECT *
