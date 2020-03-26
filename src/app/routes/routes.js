@@ -3,7 +3,7 @@ const db = require('../../config/database')
 module.exports = (app) => {
 
     app.get('/', function(req, res) {
-        resp.marko(
+        res.marko(
             require('../views/base/home/home.marko')
         );
     });
@@ -66,11 +66,11 @@ module.exports = (app) => {
             .catch(erro => console.log(erro));
     });
 
-    app.delete('/livros/:id', (req, resp) => {
+    app.delete('/livros/:id', (req, res) => {
         const id = req.params.id;
         const livroDao = new LivroDao(db);
         livroDao.remove(id)
-            .then(() => resp.status(200).end())
+            .then(() => res.status(200).end())
             .catch(erro => console.log(erro));
     });
 }
